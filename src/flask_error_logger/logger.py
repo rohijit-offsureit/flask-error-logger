@@ -33,7 +33,7 @@ class Logger:
                     "404":"404.html"
                 }
 
-                If 404 in error_sequence, "404.html" will be used. Else, default html templates will be used.
+                If 404 in error_types, "404.html" will be used. Else, default html templates will be used.
         * testing(bool): Whether Logger is being initalised for testing.
         * db_path(str): Path to error db. If None, defaults to path provided in environment. If Path not provided in environment, defaults to one directory above current working directory.
 
