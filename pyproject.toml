@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "flask-error-logger"
-version = "0.0.1"
+version = "0.0.4"
 authors = [
   { name="Rohijit Sinha", email="sinharohijit97@gmail.com" },
 ]
@@ -18,9 +18,9 @@ classifiers = [
 ]
 
 dependencies = [
-    "flask>=2.0",
-    "peewee>=3.15.0",
-    "jinja2>=3.0.1"
+    "flask >= 2.0",
+    "peewee >= 3.15.3",
+    "jinja2 >= 3.1.2"
 ]
 
 [project.urls]
