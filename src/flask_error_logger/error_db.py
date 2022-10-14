@@ -28,7 +28,7 @@ class User(BaseModel):
         role: ['admin', 'dev']
     """
     name = CharField()
-    email = CharField()
+    email = CharField(unique=True)
     role = CharField()
     password = CharField()
 
@@ -71,7 +71,7 @@ class MailingListUsers(BaseModel):
     user = ForeignKeyField(User, backref="mailing_list", on_delete="CASCADE")
 
 
-class ErrorTable(Model):
+class ErrorTable(BaseModel):
     uid = CharField(max_length=12)
     resolved_at = DateTimeField(null=True)
     resolved = BooleanField(default=False)
@@ -80,6 +80,7 @@ class ErrorTable(Model):
     method = CharField(max_length=10, null=True)
     context = JSONField()
     error_trace = TextField()
+    comments = TextField(null=True)
 
 
 def create_error_table():

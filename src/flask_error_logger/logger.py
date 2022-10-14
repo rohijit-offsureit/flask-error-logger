@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from typing import Sequence, Union
 from flask import Flask
+from peewee import IntegrityError
 
 from flask_error_logger.error_logger import ErrorLogger
 from flask_error_logger.error_db import create_error_table, ERROR_DB, User, error_db
@@ -48,26 +49,28 @@ class Logger:
                  testing: bool = False,
                  db_path: Path = ERROR_DB):
         self.error_logger = ErrorLogger(app, error_types, error_templates)
-
-        db_init = self._init_db(db_path)
-        if db_init:
-            self._create_admin(ADMIN_EMAIL, ADMIN_PASSWORD)
+        db_instance = self._init_db(Path(db_path))
+        self._create_admin(ADMIN_EMAIL, ADMIN_PASSWORD)
+        self.error_logger.attach_db(db_instance)
 
         register_handlers(self.error_logger)
 
-    def _init_db(self, db_path):
+    def _init_db(self, db_path: Path):
+        Path.touch(db_path, mode=0o666, exist_ok=True)
         error_db.init(db_path, stale_timeout=300)
-        if not os.path.exists(db_path):
-            create_error_table()
-            return True
-        return False
+        create_error_table()
+        return error_db
 
     def _create_admin(self, email, password):
-        with error_db as db:
-            user = User(
-                name="Admin",
-                email=email,
-                role="admin",
-            )
-            user.set_password(password)
-            user.save()
+        try:
+            with error_db as db:
+                user = User(
+                    name="Admin",
+                    email=email,
+                    role="admin",
+                )
+                user.set_password(password)
+                user.save()
+                print("=========user saved")
+        except IntegrityError:
+            pass

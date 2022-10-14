@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 /env
 
-test_output.txt
+test_output4xx.txt
+test_output5xx.txt

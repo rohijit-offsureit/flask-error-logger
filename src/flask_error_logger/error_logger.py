@@ -23,6 +23,9 @@ class ErrorLogger:
         self.show_templates, self.error_templates = self.create_templates_mapping(
             error_templates)
 
+    def attach_db(self, db):
+        self.db = db
+
     def create_error_list(self, error_seq: Sequence):
         """
         Create a list of errors for a given error sequence.
@@ -44,13 +47,12 @@ class ErrorLogger:
         if "5xx" in error_seq_lower_case:
             all_5xx = True
         # get errors if not 4xx or 5xx
-        if all_4xx:
-            for error in error_seq_lower_case:
-                if error.startswith("5") and not error.endswith("x"):
-                    error_list.append(error)
-        if all_5xx:
-            for error in error_seq_lower_case:
+        for error in error_seq_lower_case:
+            if not all_4xx:
                 if error.startswith("4") and not error.endswith("x"):
+                    error_list.append(error)
+            if not all_5xx:
+                if error.startswith("5") and not error.endswith("x"):
                     error_list.append(error)
 
         return error_list, all_4xx, all_5xx
