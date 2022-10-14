@@ -30,12 +30,12 @@ class Logger:
             * example: If dict provided\n
                 {
                     "500":"500.html",
-                    "404":"404.html"
+                    "404":"not_found.html"
                 }
 
-                If 404 in error_types, "404.html" will be used. Else, default html templates will be used.
+                In the above example, the templates will be used only if they are mentioned in `error_types` argument. Otherwise they will not be registered and you will get `flask`'s default 404 page.
         * testing(bool): Whether Logger is being initalised for testing.
-        * db_path(str): Path to error db. If None, defaults to path provided in environment. If Path not provided in environment, defaults to one directory above current working directory.
+        * db_path(str): A sting or `pathlib.Path` to the database to be used. If None, defaults to path provided in environment. If Path not provided in environment, defaults to one directory above current working directory.
 
     #### Raises:
         * TypeError: If app is not an instance of Flask
