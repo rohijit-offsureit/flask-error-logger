@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import Sequence, Union
 from flask import Flask
@@ -57,7 +56,9 @@ class Logger:
 
     def _init_db(self, db_path: Path):
         Path.touch(db_path, mode=0o666, exist_ok=True)
-        error_db.init(db_path, stale_timeout=300)
+        error_db.init(db_path, stale_timeout=300, pragmas={
+            "foreign_keys": 1
+        })
         create_error_table()
         return error_db
 
@@ -71,6 +72,5 @@ class Logger:
                 )
                 user.set_password(password)
                 user.save()
-                print("=========user saved")
         except IntegrityError:
             pass

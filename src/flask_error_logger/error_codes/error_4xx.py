@@ -4,9 +4,6 @@ from werkzeug.exceptions import (
 )
 
 
-from flask_error_logger.error_templates.default_templates import get_html
-
-
 # 404
 def not_found_error(e: NotFound, template: str = None):
     if template is None:

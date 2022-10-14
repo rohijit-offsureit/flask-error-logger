@@ -128,6 +128,3 @@ dmypy.json
 # Pyre type checker
 .pyre/
 /env
-
-test_output4xx.txt
-test_output5xx.txt

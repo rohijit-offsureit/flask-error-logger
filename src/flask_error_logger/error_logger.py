@@ -1,8 +1,6 @@
-import os
 from typing import Sequence, Union
 
 from flask import Flask
-from peewee import Model
 
 
 class ErrorLogger:

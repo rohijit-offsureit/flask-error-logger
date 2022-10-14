@@ -1,4 +1,3 @@
-import os
 import traceback
 from uuid import uuid4
 
@@ -10,7 +9,6 @@ from werkzeug.exceptions import (
 from playhouse.pool import PooledSqliteDatabase
 
 from flask_error_logger.error_db import error_db, ErrorTable
-from flask_error_logger.error_templates.default_templates import get_html
 
 
 class NoDBError(Exception):

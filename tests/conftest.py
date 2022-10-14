@@ -13,8 +13,7 @@ from flask_error_logger.config import ERROR_DB
 @pytest.fixture
 def app():
     app = Flask(__name__, instance_relative_config=True)
-    db_fd, db_path = tempfile.mkstemp(suffix=".sqlite3")
-    # db_path = ERROR_DB
+    db_path = ERROR_DB
     app.config['TESTING'] = True
     app.config['DEBUG'] = True
     app.config["ERROR_DB"] = db_path
@@ -28,12 +27,6 @@ def app():
         raise ZeroDivisionError
 
     yield app
-    os.close(db_fd)
-    os.unlink(db_path)
-    # try:
-    #     os.remove(Path(db_path))
-    # except FileNotFoundError:
-    #     pass
 
 
 # barebones client
@@ -45,7 +38,8 @@ def client(app: Flask):
 # app implementing rest api
 @pytest.fixture
 def rest_client(app: Flask):
-    Logger(app,error_types=(500,404), testing=True, db_path=app.config['ERROR_DB'])
+    Logger(app, error_types=(500, 404), testing=True,
+           db_path=app.config['ERROR_DB'])
 
     @app.get("/body")
     def body():
@@ -56,7 +50,7 @@ def rest_client(app: Flask):
 # app inplementing server side rendering with default error code templates
 @pytest.fixture
 def default_client(app: Flask):
-    Logger(app,error_types=(500,404), error_templates=True, testing=True,
+    Logger(app, error_types=(500, 404), error_templates=True, testing=True,
            db_path=app.config['ERROR_DB'])
 
     @app.get("/body")
